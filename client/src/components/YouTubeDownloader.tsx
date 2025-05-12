@@ -47,18 +47,18 @@ export default function YouTubeDownloader() {
   };
 
   return (
-    <div className="space-y-6 flex flex-col items-center">
+    <div className="space-y-6 flex flex-col items-center w-full px-2 sm:px-0">
       <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-xl">
         <div>
           <label htmlFor="youtube-url" className="block text-sm font-medium text-gray-700 dark:text-gray-100">
             YouTube URL
           </label>
-          <div className="mt-1 flex rounded-md shadow-sm">
+          <div className="mt-1 flex flex-col sm:flex-row rounded-md shadow-sm gap-2">
             <input
               type="text"
               name="youtube-url"
               id="youtube-url"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:text-black"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-900 dark:text-white"
               placeholder="https://www.youtube.com/watch?v=..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -66,7 +66,7 @@ export default function YouTubeDownloader() {
             />
             <button
               type="submit"
-              className="ml-3 inline-flex items-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              className="w-full sm:w-auto inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               disabled={loading}
             >
               {loading ? 'Loading...' : 'Fetch Info'}
@@ -82,7 +82,7 @@ export default function YouTubeDownloader() {
       )}
 
       {videoDetails && (
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm w-full max-w-xl">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm w-full max-w-xl dark:bg-gray-900 dark:border-gray-700 dark:text-white">
           <div className="flex flex-col items-center space-y-4">
             <img
               src={videoDetails.thumbnail}
@@ -90,7 +90,7 @@ export default function YouTubeDownloader() {
               className="w-full max-w-md rounded-lg object-cover"
             />
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-900 text-center mb-6">{videoDetails.title}</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white text-center mb-6">{videoDetails.title}</h3>
 
               {/* Audio Only */}
               {videoDetails.audioFormats.length > 0 && (
@@ -100,13 +100,13 @@ export default function YouTubeDownloader() {
                     {videoDetails.audioFormats.map((format) => (
                       <div
                         key={format.itag}
-                        className="flex items-center justify-between rounded-md border border-gray-200 p-3"
+                        className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between rounded-md border border-gray-200 p-3 gap-2"
                       >
                         <div>
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">
                             {format.quality} ({format.mimeType.split(';')[0]})
                           </p>
-                          <p className="text-xs text-gray-500">Audio Only</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-300">Audio Only</p>
                         </div>
                         <button
                           onClick={() => handleDownload(format)}
@@ -129,13 +129,13 @@ export default function YouTubeDownloader() {
                     {videoDetails.videoFormats.map((format) => (
                       <div
                         key={format.itag}
-                        className="flex items-center justify-between rounded-md border border-gray-200 p-3"
+                        className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between rounded-md border border-gray-200 p-3 gap-2"
                       >
                         <div>
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">
                             {format.quality} ({format.mimeType.split(';')[0]})
                           </p>
-                          <p className="text-xs text-gray-500">Video Only</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-300">Video Only</p>
                         </div>
                         <button
                           onClick={() => handleDownload(format)}
@@ -158,13 +158,13 @@ export default function YouTubeDownloader() {
                     {videoDetails.videoAudioFormats.map((format) => (
                       <div
                         key={format.itag}
-                        className="flex items-center justify-between rounded-md border border-gray-200 p-3"
+                        className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between rounded-md border border-gray-200 p-3 gap-2"
                       >
                         <div>
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">
                             {format.quality} ({format.mimeType.split(';')[0]})
                           </p>
-                          <p className="text-xs text-gray-500">Video + Audio</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-300">Video + Audio</p>
                         </div>
                         <button
                           onClick={() => handleDownload(format)}
