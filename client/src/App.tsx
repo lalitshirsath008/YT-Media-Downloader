@@ -27,9 +27,12 @@ function AppShell() {
   return (
     <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white' : 'bg-gradient-to-br from-blue-100 via-white to-blue-200 text-gray-900'}`}>
       <header className="flex items-center justify-between px-6 py-4 shadow-lg bg-white/70 dark:bg-black/40 backdrop-blur-md">
-        <div className="flex items-center space-x-3">
-          <Logo />
-          <span className="text-2xl font-extrabold tracking-tight select-none text-blue-700 dark:text-white">Media Downloader</span>
+        <div className="flex flex-col items-start space-y-0.5">
+          <div className="flex items-center space-x-3">
+            <Logo />
+            <span className="text-2xl font-extrabold tracking-tight select-none text-blue-700 dark:text-white">Media Downloader</span>
+          </div>
+          <span className="ml-12 text-xs font-medium text-gray-400 dark:text-gray-300">by Lalit Shirsath</span>
         </div>
         <ThemeToggle />
       </header>

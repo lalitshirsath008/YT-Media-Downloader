@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 
@@ -24,6 +24,33 @@ export default function YouTubeDownloader() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
+  const [progress, setProgress] = useState(0);
+  const progressInterval = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (loading) {
+      setProgress(0);
+      progressInterval.current = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 90) return prev + 10;
+          return prev;
+        });
+      }, 200);
+    } else {
+      setProgress(100);
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+        progressInterval.current = null;
+      }
+      setTimeout(() => setProgress(0), 500);
+    }
+    return () => {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+        progressInterval.current = null;
+      }
+    };
+  }, [loading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +76,17 @@ export default function YouTubeDownloader() {
   return (
     <div className="space-y-6 flex flex-col items-center w-full px-2 sm:px-0">
       <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-xl">
+        {loading && (
+          <div className="w-full mb-2">
+            <div className="h-2 w-full bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div
+                className="h-2 bg-blue-500 transition-all duration-200"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="text-xs text-center mt-1 text-gray-500 dark:text-gray-300">Loading... {progress}%</div>
+          </div>
+        )}
         <div>
           <label htmlFor="youtube-url" className="block text-sm font-medium text-gray-700 dark:text-gray-100">
             YouTube URL
