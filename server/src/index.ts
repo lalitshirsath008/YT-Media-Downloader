@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import ytdl from 'ytdl-core';
-import { getInstagramUrl } from 'instagram-url-direct';
+const ytdl = require('ytdl-core');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,7 +18,7 @@ app.get('/api/youtube', async (req, res) => {
     }
 
     const info = await ytdl.getInfo(url);
-    const audioFormats = ytdl.filterFormats(info.formats, 'audioonly').map(format => ({
+    const audioFormats = ytdl.filterFormats(info.formats, 'audioonly').map((format: any) => ({
       itag: format.itag,
       quality: format.audioQuality || format.qualityLabel || 'audio',
       mimeType: format.mimeType,
@@ -27,7 +26,7 @@ app.get('/api/youtube', async (req, res) => {
       hasVideo: format.hasVideo,
       url: format.url
     }));
-    const videoFormats = ytdl.filterFormats(info.formats, 'videoonly').map(format => ({
+    const videoFormats = ytdl.filterFormats(info.formats, 'videoonly').map((format: any) => ({
       itag: format.itag,
       quality: format.qualityLabel || 'video',
       mimeType: format.mimeType,
@@ -35,7 +34,7 @@ app.get('/api/youtube', async (req, res) => {
       hasVideo: format.hasVideo,
       url: format.url
     }));
-    const videoAudioFormats = ytdl.filterFormats(info.formats, 'audioandvideo').map(format => ({
+    const videoAudioFormats = ytdl.filterFormats(info.formats, 'audioandvideo').map((format: any) => ({
       itag: format.itag,
       quality: format.qualityLabel || 'video+audio',
       mimeType: format.mimeType,
@@ -55,23 +54,6 @@ app.get('/api/youtube', async (req, res) => {
   } catch (error) {
     console.error('YouTube API Error:', error);
     res.status(500).json({ error: 'Failed to fetch YouTube video info', details: error instanceof Error ? error.message : String(error) });
-  }
-});
-
-// Instagram media endpoint
-app.get('/api/instagram', async (req, res) => {
-  try {
-    const { url } = req.query;
-    
-    if (!url || typeof url !== 'string') {
-      return res.status(400).json({ error: 'Instagram URL is required' });
-    }
-
-    const result = await getInstagramUrl(url);
-    res.json(result);
-  } catch (error) {
-    console.error('Instagram API Error:', error);
-    res.status(500).json({ error: 'Failed to fetch Instagram media' });
   }
 });
 
